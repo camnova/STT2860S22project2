@@ -1,7 +1,7 @@
 ---
 title: "Group Work Plan"
 subtitle: "STT2860 S22 Project 02"
-author: "Authors: ALL GROUP MEMBER NAMES HERE"
+author: "Authors: Cameron Pittman"
 date: "`r format(Sys.time(), '%A, %B %d, %Y @ %I:%M %p')`"
 output: 
   html_document: 
@@ -12,14 +12,14 @@ output:
 
 **Work Plan/Assignments**
 
-ERASE THIS TEXT AND OUTLINE/EXPLAIN YOUR PLAN FOR COMPLETING THE PROJECT WORK
+I plan to work through the project components in order, starting with #02A, then #02B, and finishing with #02C.
 
 **Completion Timeline**
 
-ERASE THIS TEXT AND OUTLINE/EXPLAIN YOUR PLANNED TIMELINE FOR TASK COMLETION
+I plan to complete #02A on Friday April 1st, begin working on #02B that weekend, to be completed by Monday April 4th. I plan to use my remaining time for the project on #02C, I hope to complete it by Thursday April 8th in order to give myself time to troubleshoot over the weekend.
 
 **Communication Plan**
 
-ERASE THIS TEXT AND OUTLINE/EXPLAIN YOUR PLAN FOR GROUP COMMUNICATION
+I am completing this project on my own, so I will not need to have a communication plan with others. If I encounter any issues, I will reach out to Dr. Thomley via the private forum or attend office hours.
 
 ***
