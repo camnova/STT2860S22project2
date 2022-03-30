@@ -1,7 +1,7 @@
 ---
 title: "Becoming a Data Scientist"
 subtitle: "STT2860 S22 Project 02"
-author: "Author: YOUR NAME HERE"
+author: "Author: Cameron Pittman"
 date: "`r format(Sys.time(), '%A, %B %d, %Y @ %I:%M %p')`"
 output: 
   html_document: 
@@ -12,38 +12,38 @@ output:
 
 **Q1: What is the name of the person interviewed?**
 
-ANSWER:
+ANSWER: Jasmine Dumas
 
 **Q2: Why did you choose the particular interview you did?**
 
-ANSWER:
+ANSWER: I hoped to learn about her transition from another field to data science, as well as get some perspective on the experiences of a woman of color in the field of data science.
 
 **Q3: Does the person consider themselves a data scientist?**
 
-ANSWER:
+ANSWER: Jasmine does consider herself a data scientist, as her skillset most closely alligns with that of a data scientist.
 
 **Q4: What is their formal and self-taught education in data science?**
 
-ANSWER:
+ANSWER: Her undergraduate education in biomedical engineering taught her problem solving skills that she then transferred to her data science interests. After her undergraduate degree she began working with bioinformatics, with a professor who provided guidance as she learned data science principles outside of a traditional academic setting. She also used the Johns Hopkins courses and online resources to help aid her in learning programming specifics. She then began a masters program in data science. 
 
 **Q5: What has been their career path? Did they start off in data science?**
 
-ANSWER:
+ANSWER: Jasmine started off as a biomedical engineering major before transitioning to data science. Her problem-solving skills that she applied to biomedical engineering when developing products for use with patients transferred to her work as a data scientist. 
 
 **Q6: What programs/technologies to they use when working in data science?**
 
-ANSWER:
+ANSWER: Jasmine uses R and specifically the Shiny package within R. 
 
 **Q7: What is one interesting (to you) data science problem they have worked on?**
 
-ANSWER:
+ANSWER: Jasmine's work on developing a Shiny program that is more accessible for looking at gene expression is very interesting to me. I think that having scientific tools that are more user-friendly is always a good thing, as it can minimize the chance of user-error which can have drastic reprecussions in a medical field. 
 
 **Q8: Are there any specific pieces of advice they gave that inspire/resonate with you?**
 
-ANSWER:
+ANSWER: Her use of online resources to learn complex programming languages is very encouraging to me, since it's too late for me to invest much more time in learning data science in my undergraduate degree. I also appreciated her thoughts on not necessarily needing to get a masters to work in the field.
 
 **Q9: Was there anything that surprised you or that you particularly identified with?**
 
-ANSWER:
+ANSWER: I really identified with her desire to work in her potential field of interest before investing in a masters program. I am currently considering switching my career path once I get my undergraduate degree, and I hope to find opportunities to work in my fields of interest before committing to a program.
 
 ***
