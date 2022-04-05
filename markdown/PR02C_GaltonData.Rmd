@@ -1,6 +1,6 @@
 ---
 title: "Project 2C: Galton Data"
-author: "PUT YOUR NAME HERE"
+author: "Cameron Pittman"
 date: '`r format(Sys.time(), "%A, %B %d, %Y @ %I:%M %p")`'
 output: 
   html_document: 
@@ -23,7 +23,8 @@ knitr::opts_chunk$set(
 ### Packages Used
 
 ```{r loadpackages}
-
+library(tidyverse)
+library(readr)
 ```
 
 ### Datasets Used
@@ -35,19 +36,22 @@ Francis Galton, a cousin of Charles Darwin, studied the relationship between par
 #### Galton Main Dataset
 
 ```{r loadmaindata}
-
+data_main <- read_csv("https://raw.githubusercontent.com/STAT-JET-ASU/Datasets/master/Instructor/galtonfamiliesmain.csv")
+glimpse(data_main)
 ```
 
 #### Galton Subset Dataset
 
 ```{r loadsubdata}
-
+data_sub <- read_csv("https://raw.githubusercontent.com/STAT-JET-ASU/Datasets/master/Instructor/galtonfamiliessub.csv")
+glimpse(data_sub)
 ```
 
 #### Galton Notebook Dataset
 
 ```{r loadnotebook}
-
+data_notebook <- read_csv("https://raw.githubusercontent.com/STAT-JET-ASU/Datasets/master/Instructor/galtonfamiliesnotebook.csv")
+data_notebook
 ```
 
 <hr>
@@ -76,7 +80,73 @@ Load the three Galton datasets and use `glimpse()` to explore their structures. 
    * in order of height within each sex of child
 
 ```{r assembledata1}
+#mutate/select from `data_main` to create needed and remove unnecessary variables
+data_main <- data_main %>%
+  mutate(familyID = as.numeric(ifelse(FamilyID == "136A", 205, FamilyID)),
+         mother_ht = 1.08 * Mother,
+         child_ht = if_else(Child == 'Daughter',  1.08 * Height,  Height),
+         midparent = ((mother_ht + Father)/2)
+         ) %>%
+  select(familyid = familyID,
+         num_children = Children,
+         father_ht = Father,
+         mother_ht,
+         midparent,
+         child_sex = Child,
+         child_ht,
+         )
 
+#mutate/select from `data_sub` to create needed and remove unnecessary variables
+data_sub <- data_sub %>%
+  mutate(
+    father_ht = FatherR + 60,
+    mother = MotherR + 60,
+    height = HeightR + 60,
+    mother_ht = 1.08 * mother,
+    child_ht = if_else(Child == 'Daughter',  1.08 * height,  height),
+    midparent = ((mother_ht + father_ht)/2)
+  ) %>%
+   select(familyid = FamilyID,
+         num_children = Children,
+         father_ht,
+         mother_ht,
+         midparent,
+         child_sex = Child,
+         child_ht
+         )
+
+#mutate data_notebook to correct `familyID` `136A` to `205` and make numeric
+data_notebook <- data_notebook %>%
+  mutate(familyID = as.numeric(ifelse(FamilyID == "136A", 205, FamilyID)))
+
+#use bind_rows to create dataframe `assembled_data1` including `data_main` and `data_sub`
+assembled_data1 <- bind_rows(data_main, data_sub)
+
+#makes observations in `child_sex` all lowercase
+assembled_data1$child_sex <- tolower(assembled_data1$child_sex)
+
+#joins `data_notebook` to `assembled_data1` using `familyid`, selects the needed variables in the correct order, arranges by `familyid`, `child_sex`, and `child_ht`
+assembled_data1 <- assembled_data1 %>%
+  inner_join(data_notebook, by = c("familyid" = "familyID")) %>%
+  select(
+    familyid,
+    page = Page,
+    num_children,
+    father_ht,
+    mother_ht,
+    midparent,
+    child_sex,
+    child_ht
+  ) %>%
+  arrange(
+    familyid,
+    desc(child_sex),
+    desc(child_ht)
+  )
+
+#displays resulting dataframe
+glimpse(assembled_data1)
+head(assembled_data1)
 ```
 
 #### Dataset #2
@@ -84,7 +154,12 @@ Load the three Galton datasets and use `glimpse()` to explore their structures. 
 From Dataset #1, select the variables `familyid` and `num_children`, then reduce the dataset so it contains only one unique row per family. Use `glimpse()` to display the result. (Hint: The final dataset should have 205 rows/observations and two variables/columns.)
 
 ```{r assembledata2}
-
+assembled_data2 <- assembled_data1 %>%
+  select(familyid,
+         num_children
+  )  %>%
+  distinct()
+glimpse(assembled_data2)
 ```
 
 ### Visualization 1: Updated Scatterplot
@@ -118,7 +193,17 @@ Include the following.
 * use `theme()` to move the legend to the bottom of the scatterplot
 
 ```{r updatedscatterplot}
-
+assembled_data1 %>%
+  ggplot(aes(x = child_ht, y = midparent, color = child_sex)) + #sets x/y axes and colors points based on 'child_sex'
+  geom_point(size = 1.5, alpha = 0.4) + #creates scatterplot with larger point size and transparent points
+  scale_color_manual(values = c("#DC3220",
+                                "#005AB5")) + #colorblind friendly hex codes sourced from davidmathlogic.com
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 22), limits = c(60, 79)) + #sets x axis limits and creates breaks at every whole inch
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 14), limits = c(64, 74)) + #sets y axis limits and creates breaks at every whole inch
+  coord_fixed() + #axes have same unit spacing
+  labs(title = "Child Height Compared to Mid-Parent Height", subtitle = "Differentiated for Child Sex", x = "Child Height in Inches", y = "Averaged Parent Height in Inches", color = "Gender of Child") + #sets labels
+  theme_grey() + #built-in theme
+  theme(legend.position = "bottom") #moves legend below the plot
 ```
 
 ### Visualization 2: Number of Children
@@ -128,7 +213,19 @@ Include the following.
 Create a barplot to show the distribution of the number of children per family. Set the bars to something other than the default `width`. Scale the x-axis so that there is a tick mark for each bar. Choose appropriate colors, labels, themes, and/or and other types of formatting that you feel will enhance the meaning or visual appearance of the plot.  (Hint: Use `count()` to find out how many families have a given number of children, then use that information to create your plot.)
 
 ```{r childrenbarplot}
+childrenbardata <- assembled_data2 %>% #creating a new dataframe with `num_children` and counts of how many families have each value in `num_children`, saved as `num_families`
+  count(num_children) %>%
+  select(num_children,
+         num_families = n)
 
+childrenbardata %>%
+  ggplot(aes(x = num_children, y = num_families)) + #creates a barplot of distribution of family size from new dataframe
+  geom_bar(stat = "identity", width = 0.8, fill = "#005AB5") + #sets the width and fill of the bars
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 16)) + #sets x-axis ticks to one per family size
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 7)) + #sets y-axis ticks to be easier to read
+  labs(title = "Distribution of Family Sizes by Number of Children", x = "Number of Children", y = "Number of Families") + #sets labels
+  theme_grey() #built-in theme consistent with previous plot
+  
 ```
 
 <hr>
@@ -139,19 +236,19 @@ Create a barplot to show the distribution of the number of children per family. 
 
 **ANSWER**
 
-ERASE THIS TEXT AND ANSWER QUESTION HERE
+I think my scatterplot is an improvement over Galton's original diagram, as it feels more intuitive to read and includes fewer extraneous variables (eg. deviations). I might add linear regressions to the plot (one for daughter and one for son) to communicate how average child height increases with average midparent height more effectively.
 
 **Question 2:** Explain the rationale behind the choices you made when creating your scatterplot and barplot, such as size, color, transparency, or other features. What motivated your decisions? 
 
 **ANSWER**
 
-ERASE THIS TEXT AND ANSWER QUESTION HERE
+I experimented with the size and transparency of the points in my scatterplot, and decided on the parameters I chose because I felt it made the plot easiest to read. I chose the colors of both my plots based on pairs of colorblindness friendly hex codes I found on [this website](https://davidmathlogic.com/colorblind/#%23D81B60-%231E88E5-%23FFC107-%23004D40) and tried to choose colors that would be distinct for all viewers. I chose to use one of the same colors from the scatterplot in the barplot in order to keep the document consistent. 
 
 **Question 3:** Considering best practices, how does using `coord_fixed()` enhance the authenticity of the information shown in the scatterplot, such as the relationship and spread of the data?
 
 **ANSWER**
 
-ERASE THIS TEXT AND ANSWER QUESTION HERE
+After testing my plot with and without the addition of `coord_fixed()`, I found that using `coord_fixed()` made the spread of the data more accurate.
 
 ***
 ```{r}
