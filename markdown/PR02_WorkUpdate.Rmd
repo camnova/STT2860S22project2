@@ -1,7 +1,7 @@
 ---
 title: "Group Project Update"
 subtitle: "STT2860 S22 Project 02"
-author: "Authors: ALL GROUP MEMBER NAMES HERE"
+author: "Authors: Cameron Pittman"
 date: "`r format(Sys.time(), '%A, %B %d, %Y @ %I:%M %p')`"
 output: 
   html_document: 
@@ -14,18 +14,18 @@ output:
 
 Refer back to your original work plan. Has anything changed? Explain.
 
-ERASE THIS TEXT AND ANSWER THE QUESTION
+Nothing has changed in my plan to complete the work.
 
 **Completion Timeline Update**
 
 Refer back to your original timeline. Has anything changed? Explain.
 
-ERASE THIS TEXT AND ANSWER THE QUESTION
+I completed all assignments earlier than expected. The project is complete as of 4/5/22.
 
 **Communication Update**
 
 Refer back to your communication plan. Has anything changed? Explain.
 
-ERASE THIS TEXT AND ANSWER THE QUESTION
+I am still completing this project on my own, I have not needed to reach out to Dr. Thomley for assistance.
 
 ***
